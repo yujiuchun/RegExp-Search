@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="./node_modules/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" placeholder="请输入正则表达式" v-model='mysearch' @keyup.enter="searchtext">
+            <div ref="textvalue" v-html="mytext"></div>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    mysearch: '',
+                    mytext: '<p>今夕何夕兮，搴舟中流。今日何323日兮，得与王子同舟。蒙羞被好8670427@qq.com兮，不訾诟耻。心几烦而不绝兮，得知王子。山有木兮木有枝，心悦君兮君不知。</p>',
+                    myoldsearch: '',
+                    myoldtext: '<p>今夕何夕兮，搴舟中流。今日何323日兮，得与王子同舟。蒙羞被好8670427@qq.com兮，不訾诟耻。心几烦而不绝兮，得知王子。山有木兮木有枝，心悦君兮君不知。</p>'
+                },
+                methods: {
+                    searchtext () {
+                        if (this.mysearch != this.myoldsearch && this.mysearch != '') {
+                            this.mytext = this.myoldtext
+                            var reg = new RegExp(this.mysearch, 'g')
+                            var newreg = this.myoldtext.match(reg)
+                            //数组去重
+                            var verynewreg = new Set(newreg)
+                            verynewreg.forEach(
+                                (item) => {
+                                    var temtext = this.mytext
+                                    var newitem = new RegExp(item, 'g')
+                                    this.mytext = temtext.replace(newitem,`<span style="color:red;background-color:yellow">${item}</span>`)
+                                }
+                            )
+                            this.myoldsearch = this.mysearch
+                        }
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
